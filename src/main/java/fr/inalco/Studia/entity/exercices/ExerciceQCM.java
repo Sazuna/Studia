@@ -1,44 +1,34 @@
 package fr.inalco.Studia.entity.exercices;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import fr.inalco.Studia.entity.Langage;
 import fr.inalco.Studia.entity.reponses.ReponseACocher;
-import jakarta.persistence.Column;
+import fr.inalco.Studia.repositories.ReponseACocherRepositoryImpl;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="exercice_qcm")
 public class ExerciceQCM extends Exercice {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="exercice_qcm_id")
-	private Long id;
 
+	@OneToMany
+    @JoinColumn(name = "exercice_qcm_id")
+	private List<ReponseACocher> reponses;
 
-
-	@ManyToMany
-	@JoinTable(
-			name = "reponse_a_cocher",
-			joinColumns = @JoinColumn(name = "reponse_id"),
-			inverseJoinColumns = @JoinColumn(name = "exercice_qcm_id")
-    )
-	private ArrayList<ReponseACocher> reponses;
-
-	public ExerciceQCM(Long id, ArrayList<ReponseACocher> reponses) {
-		super();
-		this.id = id;
+	public ExerciceQCM(int niveau, Langage langage, String consigne, List<ReponseACocher> reponses) {
+		super(niveau, langage, consigne);
 		this.reponses = reponses;
 	}
 
+	public ExerciceQCM()
+	{
+	}
+
+	/*
 	public Long getId() {
 		return id;
 	}
@@ -46,33 +36,37 @@ public class ExerciceQCM extends Exercice {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	*/
 
-	public ArrayList<ReponseACocher> getReponses() {
+	public List<ReponseACocher> getReponses() {
 		return reponses;
 	}
 
-	public void setReponses(ArrayList<ReponseACocher> reponses) {
+	public void setReponses(List<ReponseACocher> reponses) {
 		this.reponses = reponses;
 	}
-	
-	public ExerciceQCM(ArrayList<ReponseACocher> reponses)
-	{
-		this.reponses = reponses;
-	}
-
-	/**
-	 * Ajoute une bonne réponse à la liste des réponses possibles.
-	 * @param reponse
-	 */
 	
 	public void addReponse(boolean bonneReponse, String reponse)
 	{
 		this.reponses.add(new ReponseACocher(bonneReponse, reponse));
+		
+	}
+
+	public void addReponse(ReponseACocher reponse)
+	{
+		this.reponses.add(reponse);
 	}
 
 	public void removeReponse(int reponseIdx)
 	{
-		this.reponses.remove(reponseIdx);
+		ReponseACocher r = this.reponses.get(reponseIdx);
+		this.removeReponse(r);
+	}
+	
+	public void removeReponse(ReponseACocher reponse)
+	{
+		this.reponses.remove(reponse);
+		ReponseACocherRepositoryImpl.factory().removeReponse(reponse);
 	}
 	
 	/**

@@ -2,20 +2,20 @@ package fr.inalco.Studia.entity.exercices;
 
 import fr.inalco.Studia.entity.Langage;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Superclasse de tous les exercices. Ne pas utiliser.
  */
+/*
 @Entity
 @Table(name="exercice")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)*/
+@MappedSuperclass
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Crée une table par entité héritant de la classe
 public abstract class Exercice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,16 @@ public abstract class Exercice {
 	@Column(name="consigne")
 	private String consigne;
 
+	public Exercice(Long id, byte niveau, Langage langage, String consigne) {
+		this.id = id;
+		this.niveau = niveau;
+		this.langage = langage;
+		this.consigne = consigne;
+	}
+
+	public Exercice() {
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -39,12 +49,18 @@ public abstract class Exercice {
 		this.id = id;
 	}
 
-	public byte getNiveau() {
+	public Exercice(int niveau, Langage langage, String consigne) {
+		this.niveau = (byte)niveau;
+		this.langage = langage;
+		this.consigne = consigne;
+	}
+
+	public int getNiveau() {
 		return niveau;
 	}
 
-	public void setNiveau(byte niveau) {
-		this.niveau = niveau;
+	public void setNiveau(int niveau) {
+		this.niveau = (byte)niveau;
 	}
 
 	public Langage getLangage() {

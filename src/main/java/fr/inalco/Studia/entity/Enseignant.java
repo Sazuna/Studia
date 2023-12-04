@@ -19,8 +19,10 @@ public class Enseignant {
 	@Column(name="nom")
 	private String nom;
 	
+	public Enseignant() {
+	}
+
 	public Enseignant(Long id, String nom) {
-		super();
 		this.id = id;
 		this.nom = nom;
 	}

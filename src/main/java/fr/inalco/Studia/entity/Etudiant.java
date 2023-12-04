@@ -26,7 +26,10 @@ public class Etudiant {
 	private Langage langage;
 	
 	@Column(name="niveau")
-	private byte niveau;
+	private short niveau;
+	
+	public Etudiant() {
+	}
 
 	public Etudiant(Long id, String nom, Langage langage, byte niveau) {
 		super();
@@ -60,7 +63,7 @@ public class Etudiant {
 		this.langage = langage;
 	}
 
-	public byte getNiveau() {
+	public short getNiveau() {
 		return niveau;
 	}
 

@@ -3,6 +3,7 @@ package fr.inalco.Studia.gui;
 import fr.inalco.Studia.entity.exercices.ExerciceQCM;
 import fr.inalco.Studia.entity.reponses.ReponseACocher;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -24,6 +25,7 @@ public class ExerciceQCMView extends VBox {
 			CheckBox checkBox = new CheckBox(reponse.getReponseString());
 			getChildren().add(checkBox);
 		}
-			
+		
+		getChildren().add(new Button("Valider"));
 	}
 }
