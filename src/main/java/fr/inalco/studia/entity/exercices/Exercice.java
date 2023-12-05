@@ -1,6 +1,6 @@
-package fr.inalco.Studia.entity.exercices;
+package fr.inalco.studia.entity.exercices;
 
-import fr.inalco.Studia.entity.Langage;
+import fr.inalco.studia.entity.Langage;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

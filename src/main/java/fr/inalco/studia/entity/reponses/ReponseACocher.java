@@ -1,6 +1,6 @@
-package fr.inalco.Studia.entity.reponses;
+package fr.inalco.studia.entity.reponses;
 
-import fr.inalco.Studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

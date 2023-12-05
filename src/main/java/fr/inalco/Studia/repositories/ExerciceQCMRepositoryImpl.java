@@ -3,9 +3,9 @@ package fr.inalco.Studia.repositories;
 import java.util.Collection;
 import java.util.List;
 
-import fr.inalco.Studia.StudiaEntityManager;
-import fr.inalco.Studia.entity.Langage;
-import fr.inalco.Studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.StudiaEntityManager;
+import fr.inalco.studia.entity.Langage;
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
 
 public class ExerciceQCMRepositoryImpl implements ExerciceQCMRepository {
 

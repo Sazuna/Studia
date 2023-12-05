@@ -1,4 +1,4 @@
-package fr.inalco.Studia;
+package fr.inalco.studia;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

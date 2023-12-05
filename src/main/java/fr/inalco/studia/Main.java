@@ -1,4 +1,4 @@
-package fr.inalco.Studia;
+package fr.inalco.studia;
 
 import javafx.application.Application;
 

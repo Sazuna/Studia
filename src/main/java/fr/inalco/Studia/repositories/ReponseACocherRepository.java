@@ -1,6 +1,6 @@
 package fr.inalco.Studia.repositories;
 
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 
 public interface ReponseACocherRepository {
 

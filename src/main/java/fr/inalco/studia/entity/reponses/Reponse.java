@@ -1,4 +1,4 @@
-package fr.inalco.Studia.entity.reponses;
+package fr.inalco.studia.entity.reponses;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

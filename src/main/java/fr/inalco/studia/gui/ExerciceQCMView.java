@@ -1,7 +1,7 @@
-package fr.inalco.Studia.gui;
+package fr.inalco.studia.gui;
 
-import fr.inalco.Studia.entity.exercices.ExerciceQCM;
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;

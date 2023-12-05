@@ -1,4 +1,4 @@
-package fr.inalco.Studia.entity;
+package fr.inalco.studia.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

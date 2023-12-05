@@ -1,4 +1,4 @@
-package fr.inalco.Studia.gui;
+package fr.inalco.studia.gui;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

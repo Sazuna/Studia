@@ -1,7 +1,7 @@
 package fr.inalco.Studia.repositories;
 
-import fr.inalco.Studia.StudiaEntityManager;
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
+import fr.inalco.studia.StudiaEntityManager;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 

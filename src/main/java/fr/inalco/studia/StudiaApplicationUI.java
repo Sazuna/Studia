@@ -1,4 +1,4 @@
-package fr.inalco.Studia;
+package fr.inalco.studia;
 
 //import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,8 +1,8 @@
-package fr.inalco.Studia.gui;
+package fr.inalco.studia.gui;
 
-import fr.inalco.Studia.StudiaEntityManager;
-import fr.inalco.Studia.entity.exercices.ExerciceQCM;
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
+import fr.inalco.studia.StudiaEntityManager;
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import javafx.geometry.Insets;
@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * Crée la vue pour un exercice de type QCM. Cette vue sert aux enseignants qui veulent ajouter de nouveaux exercices de type QCM.
+ * Cree la vue pour un exercice de type QCM. Cette vue sert aux enseignants qui veulent ajouter de nouveaux exercices de type QCM.
  */
 public class ExerciceQCMCreatorView extends VBox {
 

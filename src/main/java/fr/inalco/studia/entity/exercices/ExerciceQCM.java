@@ -1,11 +1,11 @@
-package fr.inalco.Studia.entity.exercices;
+package fr.inalco.studia.entity.exercices;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.inalco.Studia.entity.Langage;
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
 import fr.inalco.Studia.repositories.ReponseACocherRepositoryImpl;
+import fr.inalco.studia.entity.Langage;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;

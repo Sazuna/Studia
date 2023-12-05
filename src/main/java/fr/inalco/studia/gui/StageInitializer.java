@@ -1,14 +1,14 @@
-package fr.inalco.Studia.gui;
+package fr.inalco.studia.gui;
 
 import java.util.ArrayList;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import fr.inalco.Studia.StudiaApplicationUI.StageReadyEvent;
-import fr.inalco.Studia.entity.Langage;
-import fr.inalco.Studia.entity.exercices.ExerciceQCM;
-import fr.inalco.Studia.entity.reponses.ReponseACocher;
+import fr.inalco.studia.StudiaApplicationUI.StageReadyEvent;
+import fr.inalco.studia.entity.Langage;
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.entity.reponses.ReponseACocher;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
