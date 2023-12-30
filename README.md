@@ -20,5 +20,5 @@ Si pas d'utilisateur autre que root dans mysql: </br>
 ### Initialisation du projet et lancement
 `./install.sh`
 
-Lancement du projet
+### Lancement du projet
 `./run.sh`
