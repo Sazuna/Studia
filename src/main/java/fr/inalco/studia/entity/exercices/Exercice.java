@@ -1,10 +1,13 @@
 package fr.inalco.studia.entity.exercices;
 
+import fr.inalco.studia.entity.Enseignant;
 import fr.inalco.studia.entity.Langage;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 
 /**
@@ -23,22 +26,24 @@ public abstract class Exercice {
 	private Long id;
 	
 	@Column(name="niveau")
-	private byte niveau; // 0-128
+	private byte niveau; // 1-8
 	
 	@Column(name="language")
 	private Langage langage;
 	
 	@Column(name="consigne")
 	private String consigne;
-
-	public Exercice(Long id, byte niveau, Langage langage, String consigne) {
-		this.id = id;
-		this.niveau = niveau;
-		this.langage = langage;
-		this.consigne = consigne;
+	
+	@ManyToOne
+	@JoinColumn(name="createur")
+	private Enseignant createur;
+	
+	public Exercice()
+	{
 	}
 
-	public Exercice() {
+	public Exercice(Enseignant createur) {
+		this.createur = createur;
 	}
 
 	public Long getId() {
@@ -49,10 +54,11 @@ public abstract class Exercice {
 		this.id = id;
 	}
 
-	public Exercice(int niveau, Langage langage, String consigne) {
-		this.niveau = (byte)niveau;
+	public Exercice(int niveau, Langage langage, String consigne, Enseignant createur) {
+		this.setNiveau(niveau);
 		this.langage = langage;
 		this.consigne = consigne;
+		this.createur = createur;
 	}
 
 	public int getNiveau() {
@@ -60,6 +66,8 @@ public abstract class Exercice {
 	}
 
 	public void setNiveau(int niveau) {
+		if (niveau == 0)
+			niveau = 1;
 		this.niveau = (byte)niveau;
 	}
 
@@ -78,5 +86,15 @@ public abstract class Exercice {
 	public void setConsigne(String consigne) {
 		this.consigne = consigne;
 	}
+
+	public Enseignant getCreateur() {
+		return createur;
+	}
+
+	public void setCreateur(Enseignant createur) {
+		this.createur = createur;
+	}
+
+	public abstract String getType();
 	
 }

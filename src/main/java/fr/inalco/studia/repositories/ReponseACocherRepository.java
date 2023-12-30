@@ -1,4 +1,4 @@
-package fr.inalco.Studia.repositories;
+package fr.inalco.studia.repositories;
 
 import fr.inalco.studia.entity.reponses.ReponseACocher;
 

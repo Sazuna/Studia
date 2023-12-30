@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = {"fr.inalco.Studia"})
-@EnableJpaRepositories(basePackages = "fr.inalco.Studia.repositories")
+@ComponentScan(basePackages = {"fr.inalco.studia"})
+@EnableJpaRepositories(basePackages = "fr.inalco.studia.repositories")
 @EnableTransactionManagement
 public class StudiaJpaConfig {
 }

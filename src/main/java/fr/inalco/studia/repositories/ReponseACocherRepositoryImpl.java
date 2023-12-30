@@ -1,4 +1,4 @@
-package fr.inalco.Studia.repositories;
+package fr.inalco.studia.repositories;
 
 import fr.inalco.studia.StudiaEntityManager;
 import fr.inalco.studia.entity.reponses.ReponseACocher;
@@ -31,6 +31,7 @@ public class ReponseACocherRepositoryImpl implements ReponseACocherRepository{
 		//StudiaEntityManager.getEntityManager().createQuery("DELETE FROM ReponseACocher r WHERE r.exerciceQCM IS NULL").executeUpdate();
 	}
 
+	// TODO utiliser les repositories pour faire des appels aux entity manager 
 	public void removeReponse(ReponseACocher reponse) {
 		EntityManager em = StudiaEntityManager.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -42,9 +43,7 @@ public class ReponseACocherRepositoryImpl implements ReponseACocherRepository{
 			{
 				reponse = em.merge(reponse);
 			}
-			//if (em.find(ReponseACocher.class, reponse) != null)
 			em.remove(reponse);
-			System.out.println("remove" + reponse);
 			tx.commit();
 
 
@@ -54,7 +53,7 @@ public class ReponseACocherRepositoryImpl implements ReponseACocherRepository{
 			}
 			ex.printStackTrace();
 		} finally {
-			//em.clear(); // Cela forcera à rappeler la bdd pour vérifier la présence d'un objet
+			//em.clear(); // Cela force à rappeler la bdd pour vérifier la présence d'un objet
 			em.close();
 		}
 

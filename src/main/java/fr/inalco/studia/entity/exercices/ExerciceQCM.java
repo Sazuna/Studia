@@ -3,7 +3,8 @@ package fr.inalco.studia.entity.exercices;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.inalco.Studia.repositories.ReponseACocherRepositoryImpl;
+import fr.inalco.studia.repositories.ReponseACocherRepositoryImpl;
+import fr.inalco.studia.entity.Enseignant;
 import fr.inalco.studia.entity.Langage;
 import fr.inalco.studia.entity.reponses.ReponseACocher;
 import jakarta.persistence.Entity;
@@ -19,24 +20,21 @@ public class ExerciceQCM extends Exercice {
     @JoinColumn(name = "exercice_qcm_id")
 	private List<ReponseACocher> reponses;
 
-	public ExerciceQCM(int niveau, Langage langage, String consigne, List<ReponseACocher> reponses) {
-		super(niveau, langage, consigne);
+	public ExerciceQCM(int niveau, Langage langage, String consigne, List<ReponseACocher> reponses, Enseignant createur) {
+		super(niveau, langage, consigne, createur);
 		this.reponses = reponses;
 	}
 
-	public ExerciceQCM()
+	public ExerciceQCM() // Les entités doivent avoir un constructeur par défaut.
 	{
+		super();
 	}
-
-	/*
-	public Long getId() {
-		return id;
+	
+	public ExerciceQCM(Enseignant createur)
+	{
+		super(createur);
+		this.reponses = new ArrayList<ReponseACocher>();
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	*/
 
 	public List<ReponseACocher> getReponses() {
 		return reponses;
@@ -68,18 +66,20 @@ public class ExerciceQCM extends Exercice {
 		this.reponses.remove(reponse);
 		ReponseACocherRepositoryImpl.factory().removeReponse(reponse);
 	}
-	
+
 	/**
-	 * Calcule le F-score en fonction des réponses. 
-	 * @param reponses
-	 * @return
+	 * Calcule le score en fonction des bonnes et mauvaises réponses.
+	 * Formule: score = (VP + VN) / (VP + VN + 2 * FP + 2 * FN)
+	 * @param reponses, la liste des réponses de l'utilisateur qui sera comparée avec les vraies réponses
+	 * @return le score (valeur entre 0 et 1)
 	 */
-	public float fscore(ArrayList<Boolean> reponses)
+	public double score(ArrayList<Boolean> reponses)
 	{
-		int vp = 0;
-		int fp = 0;
-		int fn = 0;
-		//int vn = 0;
+
+		double vp = 0;
+		double fp = 0;
+		double fn = 0;
+		double vn = 0;
 		
 		for (int i = 0; i < reponses.size(); i++)
 		{
@@ -90,10 +90,10 @@ public class ExerciceQCM extends Exercice {
 				{
 					vp ++;
 				}
-				/*else
+				else
 				{
 					vn ++;
-				}*/
+				}
 			}
 			else
 			{
@@ -108,7 +108,18 @@ public class ExerciceQCM extends Exercice {
 			}
 		}
 		//int vn = this.reponses.size() - vp - fp - fn;
-		float fscore = 2 * vp / (2 * vp + fp  + fn);
-		return fscore;
+		double score = (vp + vn) / (vp + vn + 2 * fp  + 2 * fn);
+		return score;
+	}
+	
+	@Override
+	public String getType()
+	{
+		return "QCM";
+	}
+	
+	public boolean equals(ExerciceQCM exo)
+	{
+		return exo.getId() == this.getId();
 	}
 }

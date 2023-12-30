@@ -1,13 +1,17 @@
 package fr.inalco.studia.gui;
 
-import fr.inalco.studia.StudiaEntityManager;
+import fr.inalco.studia.entity.Enseignant;
+import fr.inalco.studia.entity.Langage;
 import fr.inalco.studia.entity.exercices.ExerciceQCM;
 import fr.inalco.studia.entity.reponses.ReponseACocher;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import fr.inalco.studia.gui.modules.LangageSelectionToggle;
+import fr.inalco.studia.gui.modules.NiveauSelectionScroll;
+import fr.inalco.studia.repositories.ExerciceQCMRepository;
+import fr.inalco.studia.repositories.ExerciceQCMRepositoryImpl;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,12 +19,31 @@ import javafx.scene.layout.VBox;
 /**
  * Cree la vue pour un exercice de type QCM. Cette vue sert aux enseignants qui veulent ajouter de nouveaux exercices de type QCM.
  */
-public class ExerciceQCMCreatorView extends VBox {
+public class ExerciceQCMCreatorView extends VBox implements View {
 
 	public ExerciceQCMCreatorView(ExerciceQCM exercice)
 	{
 		setSpacing(10);
 		setPadding(new Insets(10));
+		ExerciceQCMRepository exoRepo = new ExerciceQCMRepositoryImpl();
+		
+
+		Langage l = exercice.getLangage();
+		if (l == null)
+		{
+			l = Langage.ANGLAIS;
+		}
+		LangageSelectionToggle lsv = new LangageSelectionToggle(l);
+		lsv.setOnMouseClicked(e -> {
+			exercice.setLangage(lsv.getSelectedLangage()); // Mise à jour du langage de l'exercice
+		});
+		getChildren().addAll(new Label("Langage"), lsv);
+		
+		NiveauSelectionScroll nsv = new NiveauSelectionScroll(exercice.getNiveau());
+		HBox labelHBox = new HBox(new Label("Niveau"), nsv.getNiveauTxt());
+		labelHBox.setSpacing(10);
+		labelHBox.setPadding(new Insets(10));
+		getChildren().addAll(labelHBox, nsv);
 
 		String consigne = exercice.getConsigne();
 
@@ -31,51 +54,58 @@ public class ExerciceQCMCreatorView extends VBox {
 			exercice.setConsigne(newValue);
 		});
 
-		getChildren().add(tfConsigne);
+		getChildren().addAll(new Label("Consigne"), tfConsigne);
 
 		for (ReponseACocher reponse: exercice.getReponses())
 		{
 			getChildren().add(new ReponseHBox(reponse, exercice));
 		}
 
-		Button ajouter = new Button ("Ajouter");
-		ajouter.setOnMouseClicked(e -> {
+		Button ajouter = new Button ("Ajouter une réponse");
+		ajouter.setOnAction(e -> {
 			ReponseACocher reponse = new ReponseACocher(false, "");
 			exercice.addReponse(reponse);
 			getChildren().add(getChildren().size() - 1, new ReponseHBox(reponse, exercice));
-			StageInitializer.stage.show();
 		});
 
-		Button valider = new Button("Valider");
-		valider.setOnMouseClicked(e -> {if (!insert(exercice)) System.out.println("erreur insert");;});
+		Button enregistrer = new Button("Enregistrer");
+		enregistrer.setOnAction(e -> {
+			exercice.setLangage(lsv.getSelectedLangage());
+			exercice.setNiveau(nsv.getNiveau());
+			if (!exoRepo.insert(exercice))
+				System.err.println("erreur insert exerciceQCM");
+			else
+			{
+				Enseignant ens = ((Enseignant) StageInitializer.connecte);
+				if (!ens.getExercicesCrees().contains(exercice))
+					ens.addExercice(exercice); // Mise à jour des exercices de l'enseignant
+					// Pas besoin de mise à jour si c'est une modification
+				StageInitializer.setScrollableView(new EnseignantView((Enseignant) StageInitializer.connecte));
+			}
+		});
+		
+		Button suivant = new Button("Suivant");
+		suivant.setOnAction(e -> {
+			exercice.setLangage(lsv.getSelectedLangage());
+			exercice.setNiveau(nsv.getNiveau());
+			if (!exoRepo.insert(exercice))
+				System.err.println("erreur insert");
+			else
+			{
+				Enseignant ens = ((Enseignant) StageInitializer.connecte);
+				if (!ens.getExercicesCrees().contains(exercice))
+					ens.addExercice(exercice); // Mise à jour des exercices de l'enseignant
+					// Pas besoin de mise à jour si c'est une modification
+				StageInitializer.setScrollableView(new ExerciceQCMCreatorView(new ExerciceQCM((Enseignant) StageInitializer.connecte)));
+			}
+		});
+		
 		HBox boutons = new HBox();
-		boutons.getChildren().addAll(valider, ajouter);
+		boutons.getChildren().addAll(ajouter, enregistrer, suivant);
+		boutons.setPadding(new Insets(10));
+		boutons.setSpacing(10);
 		getChildren().add(boutons);
-	}
 
-	boolean insert(ExerciceQCM exercice)
-	{
-		EntityManager em = StudiaEntityManager.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-
-		try {
-			tx.begin();
-			em.merge(exercice);
-			for (ReponseACocher reponse : exercice.getReponses()) {
-				reponse.setExerciceQCM(exercice);
-				em.merge(reponse);
-			}
-			tx.commit();
-		} catch (Exception ex) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-				return false;
-			}
-			ex.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return true;
 	}
 
 	public void delReponse(ReponseHBox reponse)
@@ -87,10 +117,13 @@ public class ExerciceQCMCreatorView extends VBox {
 	{
 		public ReponseHBox(ReponseACocher reponse, ExerciceQCM exercice)
 		{
+			setSpacing(10);
+			setPadding(new Insets(10));
+
 			CheckBox cb = new CheckBox();
 			cb.setSelected(reponse.getReponse());
 
-			cb.setOnMouseClicked(e -> {
+			cb.setOnAction(e -> {
 				reponse.setReponse(cb.isSelected());
 			});
 
@@ -99,11 +132,10 @@ public class ExerciceQCMCreatorView extends VBox {
 			tf.textProperty().addListener((observable, oldValue, newValue) ->
 			{
 				reponse.setReponseString(newValue);
-				System.out.println(newValue);
 			});
 
 			Button supprimer = new Button("Supprimer");
-			supprimer.setOnMouseClicked(e -> {
+			supprimer.setOnAction(e -> {
 				// Supprimer l'exo qcm dans l'exercice et dans la VBox.
 				ExerciceQCMCreatorView.this.delReponse(this);
 				exercice.removeReponse(reponse);

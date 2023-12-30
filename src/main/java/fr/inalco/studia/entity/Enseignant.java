@@ -1,45 +1,59 @@
 package fr.inalco.studia.entity;
 
-import jakarta.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.inalco.studia.entity.exercices.ExerciceQCM;
+import fr.inalco.studia.gui.ConnexionType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="enseignant")
-public class Enseignant {
+public class Enseignant extends Utilisateur {
 	
-	@Id
+	// L'identifiant est le pseudo
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="enseignant_id")
-	private Long id;
+	private Long id;*/
 	
+	
+	/*
 	@Column(name="nom")
 	private String nom;
-	
+
+	@Column(name="mdp")
+	private String mdp;
+	*/
+
+	@OneToMany
+    @JoinColumn(name="createur")
+	private List<ExerciceQCM> exercicesQCMCrees; // TODO tester avec Exercice tout court.*/
+
 	public Enseignant() {
+		super();
 	}
 
-	public Enseignant(Long id, String nom) {
-		this.id = id;
-		this.nom = nom;
+	public Enseignant(String pseudo, String nom, String prenom, String mdp)
+	{
+		super(pseudo, nom, prenom, mdp);
+		this.exercicesQCMCrees = new ArrayList<ExerciceQCM>();
 	}
 
-	public Long getId() {
-		return id;
+	public List<ExerciceQCM> getExercicesCrees() {
+		return exercicesQCMCrees;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void addExercice(ExerciceQCM exercice) {
+		this.exercicesQCMCrees.add(exercice);
 	}
 
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
+	@Override
+	public ConnexionType getConnexionType()
+	{
+		return ConnexionType.ENSEIGNANT;
 	}
 }
